@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="eventDaoImp" class="dao.daoImp.EventDaoImp"/>
+    <bean id="userDao" class="dao.daoImp.UserDaoImp"/>
+    <bean id="locationDao" class="dao.daoImp.LocationDaoImp"/>
+    <bean id="ticketDao" class="dao.daoImp.TicketDaoImp">
+        <constructor-arg ref="eventDaoImp"/>
+        <constructor-arg ref="locationDao"/>
+    </bean>
+
+    <bean id="tableBuilder" class="utils.TableBuilder" />
+    <bean id="globalController" class="controller.GlobalController">
+        <constructor-arg ref="tableBuilder"/>
+        <constructor-arg ref="ticketDao"/>
+    </bean>
+</beans>
