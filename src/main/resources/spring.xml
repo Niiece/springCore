@@ -9,25 +9,28 @@
     <bean id="eventService" class="controller.service.serviceImp.EventServiceImp" c:eventDao-ref="eventDao"/>
     <bean id="ticketService" class="controller.service.serviceImp.TicketServiceImp" c:ticketDao-ref="ticketDao"/>
     <bean id="userService" class="controller.service.serviceImp.UserServiceImp" c:userDao-ref="userDao"/>
+    <bean id="locationService" class="controller.service.serviceImp.LocationServiceImp"
+          c:locationDao-ref="locationDao"/>
 
     <bean id="eventDao" class="dao.daoImp.EventDaoImp"/>
     <bean id="userDao" class="dao.daoImp.UserDaoImp"/>
     <bean id="locationDao" class="dao.daoImp.LocationDaoImp"/>
     <bean id="ticketDao" class="dao.daoImp.TicketDaoImp" c:eventDao-ref="eventDao" c:locationDao-ref="locationDao"/>
 
-    <bean id="tableBuilder" class="utils.TableBuilder"/>
+    <bean id="tableBuilderUtil" class="utils.TableBuilderUtil"/>
 
     <bean id="globalController" class="controller.GlobalController" destroy-method="destroy"
-          c:tableBuilder-ref="tableBuilder"
-          c:ticketService-ref="ticketService"
+          c:tableBuilderUtil-ref="tableBuilderUtil"
+          c:eventService-ref="eventService"
           c:sessionController-ref="sessionController"
           c:userService-ref="userService"/>
 
-    <bean id="sessionController" class="controller.SessionControllerImp"
+    <bean id="sessionController" class="controller.SessionControllerImp" destroy-method="destroy"
           c:userService-ref="userService"
           c:ticketService-ref="ticketService"
-          c:tableBuilder-ref="tableBuilder"
-          c:eventService-ref="eventService"/>
+          c:tableBuilderUtil-ref="tableBuilderUtil"
+          c:eventService-ref="eventService"
+          c:locationService-ref="locationService"/>
 
 
 </beans>

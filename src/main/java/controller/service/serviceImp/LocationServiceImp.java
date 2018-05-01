@@ -3,6 +3,7 @@ package controller.service.serviceImp;
 import controller.service.LocationService;
 import dao.LocationDao;
 import model.Location;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 
@@ -32,5 +33,12 @@ public class LocationServiceImp implements LocationService {
     @Override
     public Collection<Location> getAll() {
         return this.locationDao.getAll();
+    }
+
+    public Location getLocationByName(String name) {
+        return locationDao.getAll().stream()
+                .filter(location -> StringUtils.equalsIgnoreCase(location.getLocationName(), name))
+                .findFirst()
+                .orElse(null);
     }
 }

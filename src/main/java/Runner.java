@@ -8,7 +8,7 @@ public class Runner {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
 
         GlobalController globalController = applicationContext.getBean(GlobalController.class);
-        globalController.makeTheChoise();
+        globalController.makeTheChoice();
 
     }
 }

@@ -22,7 +22,6 @@ public class Event extends DomainObject {
     }
 
 
-
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -31,4 +30,18 @@ public class Event extends DomainObject {
         this.dateTime = dateTime;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(name, event.name) &&
+                Objects.equals(dateTime, event.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, dateTime);
+    }
 }

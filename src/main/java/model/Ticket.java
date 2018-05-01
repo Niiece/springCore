@@ -33,6 +33,7 @@ public class Ticket extends DomainObject{
 
     public void setUser(User user) {
         this.user = user;
+        user.addTicket(this);
     }
 
     public Location getLocation() {

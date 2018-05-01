@@ -36,7 +36,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User getById(int id) {
-        return this.getById(id);
+        return this.userDao.getById(id);
     }
 
     @Override

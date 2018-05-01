@@ -1,11 +1,12 @@
 package model;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User extends DomainObject{
     private String login, password;
     private UserType userType;
-    private Set<Ticket> tickets;
+    private List<Ticket> tickets = new ArrayList<>();
 
     public User(String login, String password, UserType userType) {
         this.login = login;
@@ -37,11 +38,11 @@ public class User extends DomainObject{
         this.userType = userType;
     }
 
-    public Set<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
     }
 }

@@ -1,20 +1,21 @@
 package controller;
 
-import controller.service.TicketService;
+import controller.service.EventService;
 import controller.service.UserService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import utils.TableBuilder;
+import utils.TableBuilderUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class GlobalController implements BaseController {
 
-    private static final List<String> menuItems = Arrays.asList(
+    private static final List<String> MENU_ITEMS = Arrays.asList(
             "1. login",
             "2. view events",
             "3. register",
@@ -23,28 +24,29 @@ public class GlobalController implements BaseController {
             "**please login to buy a ticket"
     );
 
-    private TableBuilder tableBuilder;
-    private TicketService ticketService;
+    private TableBuilderUtil tableBuilderUtil;
+    private EventService eventService;
     private BufferedReader in;
+    private Scanner scanner;
     private SessionController sessionController;
     private UserService userService;
 
-    public GlobalController(TableBuilder tableBuilder, TicketService ticketService, SessionController sessionController, UserService userService) {
-        this.tableBuilder = tableBuilder;
-        this.ticketService = ticketService;
+    public GlobalController(TableBuilderUtil tableBuilderUtil, EventService eventService, SessionController sessionController, UserService userService) {
+        this.tableBuilderUtil = tableBuilderUtil;
+        this.eventService = eventService;
         this.sessionController = sessionController;
         this.userService = userService;
-        in = new BufferedReader(new InputStreamReader(System.in));
+        in = IOUtils.toBufferedReader(new InputStreamReader(System.in));
     }
 
 
     @Override
     public void showMenu() {
-        tableBuilder.menuTableBuilder(menuItems);
+        tableBuilderUtil.menuTableBuilder(MENU_ITEMS);
     }
 
 
-    public void makeTheChoise() {
+    public void makeTheChoice() {
         String a = StringUtils.EMPTY;
 
         while (!a.contains("0")) {
@@ -67,6 +69,7 @@ public class GlobalController implements BaseController {
                     break;
                 case "2":
                     showAvailableEvents();
+                    promptEnterKey();
                     break;
                 case "3":
 
@@ -96,10 +99,20 @@ public class GlobalController implements BaseController {
         if (in != null) {
             in.close();
         }
+        if (scanner != null) {
+            scanner.close();
+        }
     }
-
     @Override
     public void showAvailableEvents() {
-        tableBuilder.ticketTableBuilder(ticketService.getAll());
+        tableBuilderUtil.buildEventTable(eventService.getAll());
+    }
+
+
+
+    private void promptEnterKey() {
+        System.out.println("Press \"ENTER\" to continue...");
+        scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 }
