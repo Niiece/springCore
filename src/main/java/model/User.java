@@ -3,8 +3,7 @@ package model;
 import java.util.Set;
 
 public class User extends DomainObject{
-    private String login;
-    private String password;
+    private String login, password;
     private UserType userType;
     private Set<Ticket> tickets;
 

@@ -4,6 +4,8 @@ import controller.service.EventService;
 import dao.EventDao;
 import model.Event;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
 public class EventServiceImp implements EventService {
@@ -17,6 +19,16 @@ public class EventServiceImp implements EventService {
     @Override
     public Event getEventByName(String eventName) {
         return this.eventDao.getEventByName(eventName);
+    }
+
+    @Override
+    public void save(String eventName, String dateTime) {
+        this.eventDao.save(eventName, dateTime);
+    }
+
+    @Override
+    public void remove(String eventName) {
+        eventDao.remove(eventName);
     }
 
     @Override

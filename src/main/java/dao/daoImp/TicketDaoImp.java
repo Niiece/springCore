@@ -6,6 +6,7 @@ import dao.LocationDao;
 import dao.TicketDao;
 import model.Ticket;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -19,10 +20,10 @@ public class TicketDaoImp implements TicketDao {
     private TicketDaoImp(EventDao eventDao, LocationDao locationDao) {
         this.locationDao = locationDao;
         this.eventDao = eventDao;
-        tickets = Arrays.asList(
+        tickets = new ArrayList<>(Arrays.asList(
                 new Ticket(this.eventDao.getById(0), this.locationDao.getById(0), 8.5, 10),
                 new Ticket(this.eventDao.getById(1), this.locationDao.getById(1), 9.0, 10)
-        );
+        ));
     }
 
 

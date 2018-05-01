@@ -5,16 +5,17 @@ import model.User;
 import model.UserType;
 import org.springframework.lang.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public class UserDaoImp implements UserDao {
 
-    private List<User> users = Arrays.asList(
+    private List<User> users = new ArrayList<>(Arrays.asList(
             new User("admin", "admin1", UserType.ADMIN),
             new User("simple", "simple1", UserType.BASIC)
-    );
+    ));
 
     @Override
     public void save(User obj) {
@@ -39,5 +40,11 @@ public class UserDaoImp implements UserDao {
     @Override @NonNull
     public User getByLogin(String login) {
         return users.stream().filter(user -> user.getLogin().contains(login)).findFirst().orElse(null);
+    }
+
+    @Override
+    public void save(String login, String password) {
+        User user = new User(login, password, UserType.BASIC);
+        save(user);
     }
 }

@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <bean id="eventDaoImp" class="dao.daoImp.EventDaoImp"/>
+    <bean id="eventService" class="controller.service.serviceImp.EventServiceImp" c:eventDao-ref="eventDao"/>
+    <bean id="ticketService" class="controller.service.serviceImp.TicketServiceImp" c:ticketDao-ref="ticketDao"/>
+    <bean id="userService" class="controller.service.serviceImp.UserServiceImp" c:userDao-ref="userDao"/>
+
+    <bean id="eventDao" class="dao.daoImp.EventDaoImp"/>
     <bean id="userDao" class="dao.daoImp.UserDaoImp"/>
     <bean id="locationDao" class="dao.daoImp.LocationDaoImp"/>
-    <bean id="ticketDao" class="dao.daoImp.TicketDaoImp">
-        <constructor-arg ref="eventDaoImp"/>
-        <constructor-arg ref="locationDao"/>
-    </bean>
+    <bean id="ticketDao" class="dao.daoImp.TicketDaoImp" c:eventDao-ref="eventDao" c:locationDao-ref="locationDao"/>
 
-    <bean id="tableBuilder" class="utils.TableBuilder" />
-    <bean id="globalController" class="controller.GlobalController">
-        <constructor-arg ref="tableBuilder"/>
-        <constructor-arg ref="ticketDao"/>
-    </bean>
+    <bean id="tableBuilder" class="utils.TableBuilder"/>
+
+    <bean id="globalController" class="controller.GlobalController" destroy-method="destroy"
+          c:tableBuilder-ref="tableBuilder"
+          c:ticketService-ref="ticketService"
+          c:sessionController-ref="sessionController"
+          c:userService-ref="userService"/>
+
+    <bean id="sessionController" class="controller.SessionControllerImp"
+          c:userService-ref="userService"
+          c:ticketService-ref="ticketService"
+          c:tableBuilder-ref="tableBuilder"
+          c:eventService-ref="eventService"/>
+
+
 </beans>

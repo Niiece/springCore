@@ -6,4 +6,5 @@ import org.springframework.lang.NonNull;
 
 public interface UserService extends AbstractDomainService<User> {
     public User getByLogin(@NonNull String login);
+    public void save(@NonNull String userName, @NonNull String password);
 }

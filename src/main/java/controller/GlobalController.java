@@ -1,6 +1,8 @@
 package controller;
 
 import controller.service.TicketService;
+import controller.service.UserService;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import utils.TableBuilder;
 
@@ -17,18 +19,24 @@ public class GlobalController implements BaseController {
             "2. view events",
             "3. register",
             "",
+            "0. to exit",
             "**please login to buy a ticket"
     );
 
     private TableBuilder tableBuilder;
     private TicketService ticketService;
     private BufferedReader in;
+    private SessionController sessionController;
+    private UserService userService;
 
-    public GlobalController(TableBuilder tableBuilder, TicketService ticketService) {
+    public GlobalController(TableBuilder tableBuilder, TicketService ticketService, SessionController sessionController, UserService userService) {
         this.tableBuilder = tableBuilder;
         this.ticketService = ticketService;
+        this.sessionController = sessionController;
+        this.userService = userService;
         in = new BufferedReader(new InputStreamReader(System.in));
     }
+
 
     @Override
     public void showMenu() {
@@ -39,7 +47,7 @@ public class GlobalController implements BaseController {
     public void makeTheChoise() {
         String a = StringUtils.EMPTY;
 
-        while (!a.contains("exit")) {
+        while (!a.contains("0")) {
             showMenu();
             try {
                 a = in.readLine();
@@ -51,20 +59,47 @@ public class GlobalController implements BaseController {
 
             switch (a) {
                 case "1":
+                    try {
+                        sessionController.login(in.readLine(), in.readLine());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case "2":
-                    showAvailableTickets();
+                    showAvailableEvents();
+                    break;
+                case "3":
+
+                    try {
+                        System.out.println("enter login: ");
+                        String userName = in.readLine();
+                        System.out.println("enter password: ");
+                        String password = in.readLine();
+                        userService.save(userName, password);
+                        System.out.println("user created successfully");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "0":
+                    System.out.println("Hope to see you soon. Bye");
                     break;
                 default:
+                    System.out.println("Wrong choice. Please repeat");
                     break;
             }
         }
 
     }
 
+    private void destroy() throws IOException {
+        if (in != null) {
+            in.close();
+        }
+    }
 
     @Override
-    public void showAvailableTickets() {
+    public void showAvailableEvents() {
         tableBuilder.ticketTableBuilder(ticketService.getAll());
     }
 }

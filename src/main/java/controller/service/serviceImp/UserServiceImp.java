@@ -20,6 +20,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public void save(String userName, String password) {
+        this.userDao.save(userName, password);
+    }
+
+    @Override
     public void save(User obj) {
         this.userDao.save(obj);
     }

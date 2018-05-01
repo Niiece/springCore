@@ -3,16 +3,17 @@ package dao.daoImp;
 import dao.LocationDao;
 import model.Location;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public class LocationDaoImp implements LocationDao {
 
-    private List<Location> locations = Arrays.asList(
+    private List<Location> locations = new ArrayList<>(Arrays.asList(
             new Location("Holl: A", 20L),
             new Location("Holl: B", 20L)
-    );
+    ));
 
     @Override
     public void save(Location obj) {
