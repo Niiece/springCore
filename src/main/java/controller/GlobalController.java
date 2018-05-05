@@ -9,21 +9,12 @@ import utils.TableBuilderUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class GlobalController implements BaseController {
 
-    private static final List<String> MENU_ITEMS = Arrays.asList(
-            "1. login",
-            "2. view events",
-            "3. register",
-            "",
-            "0. to exit",
-            "**please login to buy a ticket"
-    );
-
+    private List<String> menuItems;
     private TableBuilderUtil tableBuilderUtil;
     private EventService eventService;
     private BufferedReader in;
@@ -31,7 +22,11 @@ public class GlobalController implements BaseController {
     private SessionController sessionController;
     private UserService userService;
 
-    public GlobalController(TableBuilderUtil tableBuilderUtil, EventService eventService, SessionController sessionController, UserService userService) {
+    public GlobalController(TableBuilderUtil tableBuilderUtil,
+                            EventService eventService,
+                            SessionController sessionController,
+                            UserService userService) {
+
         this.tableBuilderUtil = tableBuilderUtil;
         this.eventService = eventService;
         this.sessionController = sessionController;
@@ -42,7 +37,7 @@ public class GlobalController implements BaseController {
 
     @Override
     public void showMenu() {
-        tableBuilderUtil.menuTableBuilder(MENU_ITEMS);
+        tableBuilderUtil.menuTableBuilder(menuItems);
     }
 
 
@@ -62,7 +57,12 @@ public class GlobalController implements BaseController {
             switch (a) {
                 case "1":
                     try {
-                        sessionController.login(in.readLine(), in.readLine());
+                        String login, password;
+                        System.out.println("Enter login: ");
+                        login = in.readLine();
+                        System.out.println("Enter password: ");
+                        password = in.readLine();
+                        sessionController.login(login, password);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -103,16 +103,19 @@ public class GlobalController implements BaseController {
             scanner.close();
         }
     }
-    @Override
+
     public void showAvailableEvents() {
         tableBuilderUtil.buildEventTable(eventService.getAll());
     }
-
 
 
     private void promptEnterKey() {
         System.out.println("Press \"ENTER\" to continue...");
         scanner = new Scanner(System.in);
         scanner.nextLine();
+    }
+
+    public void setMenuItems(List<String> menuItems) {
+        this.menuItems = menuItems;
     }
 }

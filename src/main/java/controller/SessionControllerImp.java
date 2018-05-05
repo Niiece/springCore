@@ -14,27 +14,13 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class SessionControllerImp implements SessionController {
-    private static final List<String> menuItems = Arrays.asList(
-            "1. add event*",
-            "2. view events",
-            "3. remove event*",
-            "4. purchase a ticket",
-            "5. view my tickets",
-            "6. view purchased tickets*",
-            "",
-            "0. to log out",
-            "*for admins only",
-            ""
-    );
-
+    private List<String> sessionMenu;
     private TableBuilderUtil tableBuilderUtil;
-
     private TicketService ticketService;
     private UserService userService;
     private EventService eventService;
@@ -43,7 +29,12 @@ public class SessionControllerImp implements SessionController {
     private Scanner scanner;
     private LocationService locationService;
 
-    public SessionControllerImp(UserService userService, TableBuilderUtil tableBuilderUtil, TicketService ticketService, EventService eventService, LocationService locationService) {
+    public SessionControllerImp(UserService userService,
+                                TableBuilderUtil tableBuilderUtil,
+                                TicketService ticketService,
+                                EventService eventService,
+                                LocationService locationService) {
+
         this.tableBuilderUtil = tableBuilderUtil;
         this.ticketService = ticketService;
         this.eventService = eventService;
@@ -51,7 +42,6 @@ public class SessionControllerImp implements SessionController {
         this.locationService = locationService;
         in = new BufferedReader(new InputStreamReader(System.in));
         scanner = new Scanner(System.in);
-        this.ticketService.getById(0).setUser(this.userService.getById(1));
     }
 
 
@@ -83,7 +73,7 @@ public class SessionControllerImp implements SessionController {
         String a = StringUtils.EMPTY;
 
         while (!a.contains("0")) {
-            showMenu(menuItems, user);
+            showMenu(sessionMenu, user);
             try {
                 a = in.readLine();
             } catch (IOException e) {
@@ -110,8 +100,10 @@ public class SessionControllerImp implements SessionController {
                             Event event = new Event(eventName, localDateTime);
                             eventService.save(event);
                             ticketService.createTicketsForNewEvent(event, location, price);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
+                            System.out.println("something go wrong, try again");
+                            break;
                         }
                     } else {
                         System.out.println("wrong permissions. Login as admin");
@@ -126,8 +118,9 @@ public class SessionControllerImp implements SessionController {
                         try {
                             eventService.remove(in.readLine());
                             System.out.println("event has been removed");
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (Exception e) {
+                            System.out.println("try again...");
+                            break;
                         }
                     } else {
                         System.out.println("wrong permissions. Login as admin");
@@ -168,11 +161,21 @@ public class SessionControllerImp implements SessionController {
                     }
                     break;
                 case "5":
-                    tableBuilderUtil.ticketTableBuilder(this.user.getTickets());
+                    try {
+                        tableBuilderUtil.ticketTableBuilder(this.user.getTickets());
+                    } catch (Exception e) {
+                        System.out.println("something went wrong...");
+                        break;
+                    }
                     break;
                 case "6":
                     if (user.getUserType() == UserType.ADMIN) {
-                        tableBuilderUtil.ticketTableBuilder(ticketService.getPurchasedTickets());
+                        try {
+                            tableBuilderUtil.ticketTableBuilder(ticketService.getPurchasedTickets());
+                        } catch (Exception e) {
+                            System.out.println("something weng wrong...");
+                            break;
+                        }
                         break;
                     }else {
                         System.out.println("wrong permissions. Login as admin");
@@ -195,5 +198,7 @@ public class SessionControllerImp implements SessionController {
         scanner.nextLine();
     }
 
-
+    public void setSessionMenu(List<String> sessionMenu) {
+        this.sessionMenu = sessionMenu;
+    }
 }
