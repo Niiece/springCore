@@ -2,6 +2,7 @@ package dao.daoImp;
 
 import dao.LocationDao;
 import model.Location;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;

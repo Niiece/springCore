@@ -4,16 +4,14 @@ import controller.service.LocationService;
 import dao.LocationDao;
 import model.Location;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
 public class LocationServiceImp implements LocationService {
 
+    @Autowired
     private LocationDao locationDao;
-
-    public LocationServiceImp(LocationDao locationDao) {
-        this.locationDao = locationDao;
-    }
 
     @Override
     public void save(Location obj) {

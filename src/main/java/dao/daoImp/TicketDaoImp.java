@@ -5,6 +5,8 @@ import dao.EventDao;
 import dao.LocationDao;
 import dao.TicketDao;
 import model.Ticket;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +16,11 @@ import java.util.List;
 public class TicketDaoImp implements TicketDao {
 
     private List<Ticket> tickets;
+
     private EventDao eventDao;
     private LocationDao locationDao;
 
-    private TicketDaoImp(EventDao eventDao, LocationDao locationDao) {
+    public TicketDaoImp(EventDao eventDao, LocationDao locationDao) {
         this.locationDao = locationDao;
         this.eventDao = eventDao;
         tickets = new ArrayList<>(Arrays.asList(

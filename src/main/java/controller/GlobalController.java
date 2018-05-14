@@ -4,6 +4,10 @@ import controller.service.EventService;
 import controller.service.UserService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import utils.TableBuilderUtil;
 
 import java.io.BufferedReader;
@@ -12,25 +16,20 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
+
+@PropertySource("classpath:mainMenu.properties")
 public class GlobalController implements BaseController {
 
     private List<String> menuItems;
-    private TableBuilderUtil tableBuilderUtil;
-    private EventService eventService;
+    @Autowired private TableBuilderUtil tableBuilderUtil;
+    @Autowired private EventService eventService;
     private BufferedReader in;
     private Scanner scanner;
-    private SessionController sessionController;
-    private UserService userService;
+    @Autowired private SessionController sessionController;
+    @Autowired private UserService userService;
 
-    public GlobalController(TableBuilderUtil tableBuilderUtil,
-                            EventService eventService,
-                            SessionController sessionController,
-                            UserService userService) {
-
-        this.tableBuilderUtil = tableBuilderUtil;
-        this.eventService = eventService;
-        this.sessionController = sessionController;
-        this.userService = userService;
+    public GlobalController(List<String> menuItems){
+        this.menuItems = menuItems;
         in = IOUtils.toBufferedReader(new InputStreamReader(System.in));
     }
 

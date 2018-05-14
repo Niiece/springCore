@@ -3,16 +3,14 @@ package controller.service.serviceImp;
 import controller.service.UserService;
 import dao.UserDao;
 import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
 public class UserServiceImp implements UserService {
 
+    @Autowired
     private UserDao userDao;
-
-    public UserServiceImp(UserDao userDao) {
-        this.userDao = userDao;
-    }
 
     @Override
     public User getByLogin(String login) {

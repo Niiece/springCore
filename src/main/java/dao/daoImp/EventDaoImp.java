@@ -3,6 +3,7 @@ package dao.daoImp;
 import dao.EventDao;
 import model.Event;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

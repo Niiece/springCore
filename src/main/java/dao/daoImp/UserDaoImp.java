@@ -4,6 +4,7 @@ import dao.UserDao;
 import model.User;
 import model.UserType;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;

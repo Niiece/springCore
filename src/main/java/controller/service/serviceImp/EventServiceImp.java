@@ -3,6 +3,7 @@ package controller.service.serviceImp;
 import controller.service.EventService;
 import dao.EventDao;
 import model.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,11 +11,8 @@ import java.util.Collection;
 
 public class EventServiceImp implements EventService {
 
+    @Autowired
     private EventDao eventDao;
-
-    public EventServiceImp(EventDao eventDao) {
-        this.eventDao = eventDao;
-    }
 
     @Override
     public Event getEventByName(String eventName) {

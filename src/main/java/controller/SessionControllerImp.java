@@ -6,6 +6,7 @@ import controller.service.TicketService;
 import controller.service.UserService;
 import model.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import utils.TableBuilderUtil;
 
 import java.io.BufferedReader;
@@ -20,26 +21,17 @@ import java.util.stream.Collectors;
 
 public class SessionControllerImp implements SessionController {
     private List<String> sessionMenu;
-    private TableBuilderUtil tableBuilderUtil;
-    private TicketService ticketService;
-    private UserService userService;
-    private EventService eventService;
+    @Autowired private TableBuilderUtil tableBuilderUtil;
+    @Autowired private TicketService ticketService;
+    @Autowired private UserService userService;
+    @Autowired private EventService eventService;
     private User user;
     private BufferedReader in;
     private Scanner scanner;
-    private LocationService locationService;
+    @Autowired private LocationService locationService;
 
-    public SessionControllerImp(UserService userService,
-                                TableBuilderUtil tableBuilderUtil,
-                                TicketService ticketService,
-                                EventService eventService,
-                                LocationService locationService) {
-
-        this.tableBuilderUtil = tableBuilderUtil;
-        this.ticketService = ticketService;
-        this.eventService = eventService;
-        this.userService = userService;
-        this.locationService = locationService;
+    public SessionControllerImp(List<String> sessionMenu) {
+        this.sessionMenu = sessionMenu;
         in = new BufferedReader(new InputStreamReader(System.in));
         scanner = new Scanner(System.in);
     }

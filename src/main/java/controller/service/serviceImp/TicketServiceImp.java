@@ -5,6 +5,7 @@ import dao.TicketDao;
 import model.Event;
 import model.Location;
 import model.Ticket;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,11 +14,8 @@ import java.util.stream.Collectors;
 
 public class TicketServiceImp implements TicketService {
 
+    @Autowired
     private TicketDao ticketDao;
-
-    public TicketServiceImp(TicketDao ticketDao) {
-        this.ticketDao = ticketDao;
-    }
 
     @Override
     public void save(Ticket obj) {
