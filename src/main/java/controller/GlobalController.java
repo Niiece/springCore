@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 
 @PropertySource("classpath:mainMenu.properties")
-public class GlobalController implements BaseController {
+public class GlobalController{
 
     private List<String> menuItems;
     @Autowired private TableBuilderUtil tableBuilderUtil;
@@ -34,7 +34,6 @@ public class GlobalController implements BaseController {
     }
 
 
-    @Override
     public void showMenu() {
         tableBuilderUtil.menuTableBuilder(menuItems);
     }

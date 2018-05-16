@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class EventDaoImp implements EventDao {
 
     private List<Event> events = new ArrayList<>(Arrays.asList(

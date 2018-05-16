@@ -8,9 +8,12 @@ public class Runner {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext applicationContext =
-                new AnnotationConfigApplicationContext(BeanSupplier.class, DaoBeanSupplier.class, ServiceBeanSupplier.class);
+                new AnnotationConfigApplicationContext(BeanSupplier.class);
+
         GlobalController globalController = applicationContext.getBean(GlobalController.class);
         globalController.makeTheChoice();
+
+
         applicationContext.close();
 
     }

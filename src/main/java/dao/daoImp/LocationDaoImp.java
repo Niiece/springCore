@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class LocationDaoImp implements LocationDao {
 
     private List<Location> locations = new ArrayList<>(Arrays.asList(

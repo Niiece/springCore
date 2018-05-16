@@ -1,16 +1,17 @@
+import aop.CounterAspect;
 import controller.GlobalController;
 import controller.SessionController;
 import controller.SessionControllerImp;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import utils.TableBuilderUtil;
 
 import java.util.List;
 
 @Configuration
+@EnableAspectJAutoProxy
 @PropertySource("mainMenu.properties")
+@ComponentScan(value = {"aop", "controller.service.serviceImp", "dao.daoImp"})
 public class BeanSupplier {
 
     @Value("#{'${globalMenu}'.split(';')}")

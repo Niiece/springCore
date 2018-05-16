@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class TicketDaoImp implements TicketDao {
 
     private List<Ticket> tickets;

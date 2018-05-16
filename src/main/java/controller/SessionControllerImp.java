@@ -1,9 +1,6 @@
 package controller;
 
-import controller.service.EventService;
-import controller.service.LocationService;
-import controller.service.TicketService;
-import controller.service.UserService;
+import controller.service.*;
 import model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,7 @@ public class SessionControllerImp implements SessionController {
     @Autowired private TicketService ticketService;
     @Autowired private UserService userService;
     @Autowired private EventService eventService;
+    @Autowired private BookingService bookingService;
     private User user;
     private BufferedReader in;
     private Scanner scanner;
@@ -123,9 +121,7 @@ public class SessionControllerImp implements SessionController {
                         tableBuilderUtil.buildEventTable(eventService.getAll());
                         System.out.println("select event:");
                         String eventName = in.readLine();
-                        System.out.println("select event date(2007-12-03T10:15:30)");
-                        LocalDateTime localDateTime = LocalDateTime.parse(in.readLine());
-                        Event event = new Event(eventName, localDateTime);
+                        Event event = eventService.getEventByName(eventName);
                         tableBuilderUtil.ticketTableBuilder(
                                 ticketService.getAvailableTickets()
                                         .stream()
@@ -140,7 +136,8 @@ public class SessionControllerImp implements SessionController {
                             System.out.println("can not find a ticket");
                             break;
                         }
-                        ticket.setUser(this.user);
+                        bookingService.purchaseTicket(this.user, ticket);
+                        userService.updateUserType(this.user);
                         System.out.println("ticket has been purchased");
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -190,7 +187,4 @@ public class SessionControllerImp implements SessionController {
         scanner.nextLine();
     }
 
-    public void setSessionMenu(List<String> sessionMenu) {
-        this.sessionMenu = sessionMenu;
-    }
 }

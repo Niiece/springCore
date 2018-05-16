@@ -1,12 +1,16 @@
 package controller.service.serviceImp;
 
+import aop.Discount;
 import controller.service.UserService;
 import dao.UserDao;
 import model.User;
+import model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
+@Component
 public class UserServiceImp implements UserService {
 
     @Autowired
@@ -40,5 +44,14 @@ public class UserServiceImp implements UserService {
     @Override
     public Collection<User> getAll() {
         return this.userDao.getAll();
+    }
+
+    @Override
+    @Discount
+    public void updateUserType(User user) {
+        if (user.getUserType().equals(UserType.BASIC)
+                && user.getTickets().size() >= 4) {
+            user.setUserType(UserType.PREMIUM);
+        }
     }
 }

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+@Component
 public class UserDaoImp implements UserDao {
 
     private List<User> users = new ArrayList<>(Arrays.asList(

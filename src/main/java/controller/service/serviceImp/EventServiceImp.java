@@ -1,20 +1,21 @@
 package controller.service.serviceImp;
 
+import aop.Counter;
 import controller.service.EventService;
 import dao.EventDao;
 import model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 
+@Component
 public class EventServiceImp implements EventService {
 
     @Autowired
     private EventDao eventDao;
 
-    @Override
+    @Override @Counter
     public Event getEventByName(String eventName) {
         return this.eventDao.getEventByName(eventName);
     }
