@@ -33,4 +33,12 @@ public class Location extends DomainObject {
     public Set<Long> getAllSeats() {
         return LongStream.range(1, seats+1).boxed().collect(Collectors.toSet());
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "locationName='" + locationName + '\'' +
+                ", seats=" + seats +
+                '}';
+    }
 }

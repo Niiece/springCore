@@ -8,11 +8,11 @@ import model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Component;
-import org.sqlite.SQLiteException;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Component
+@Service
 public class UserServiceImp implements UserService {
 
     @Autowired

@@ -3,8 +3,14 @@ package dao.daoImp;
 import dao.EventDao;
 import model.Event;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,13 +18,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Component
+@Repository
 public class EventDaoImp implements EventDao {
 
-    private List<Event> events = new ArrayList<>(Arrays.asList(
-            new Event("Star Wars 7", LocalDateTime.parse("2018-05-12T10:00:00")),
-            new Event("Star Wars 8", LocalDateTime.parse("2018-05-12T12:00:00"))
-    ));
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+//    private List<Event> events = new ArrayList<>(Arrays.asList(
+//            new Event("Star Wars 7", LocalDateTime.parse("2018-05-12T10:00:00")),
+//            new Event("Star Wars 8", LocalDateTime.parse("2018-05-12T12:00:00"))
+//    ));
 
     public void save(String eventName, String dateTime) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -29,31 +38,68 @@ public class EventDaoImp implements EventDao {
 
     @Override
     public void remove(String eventName) {
-        remove(events.stream().filter(e -> StringUtils.equalsIgnoreCase(e.getName(), eventName)).findFirst().orElse(null));
+        Event event = new Event(eventName, null);
+        remove(event);
+//        remove(events.stream().filter(e -> StringUtils.equalsIgnoreCase(e.getName(), eventName)).findFirst().orElse(null));
     }
 
     @Override
     public void save(Event obj) {
-        events.add(obj);
+        String sql = "INSERT INTO events (event_name, event_date) VALUES (:event_name, :event_date)";
+        jdbcTemplate.update(sql, getSource(obj));
+//        events.add(obj);
     }
 
     @Override
     public void remove(Event obj) {
-            events.remove(obj);
+        String sql = "DELETE FROM events WHERE event_name = :event_name";
+        jdbcTemplate.update(sql, getSource(obj));
+//        events.remove(obj);
     }
 
     @Override
     public Event getById(int id) {
-        return events.get(id);
+        String sql = "SELECT id, event_name, event_date FROM events WHERE id = :id";
+        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("id", id), new EventMapper());
+//        return events.get(id);
     }
 
     @Override
     public Collection<Event> getAll() {
-        return events;
+        String sql = "SELECT id, event_name, event_date FROM events";
+        return jdbcTemplate.query(sql, new EventMapper());
     }
 
     @Override
     public Event getEventByName(String eventName) {
-        return events.stream().filter(event -> event.getName().contains(eventName)).findFirst().orElse(null);
+        String sql = "SELECT id, event_name, event_date FROM events WHERE event_name=:name";
+        return jdbcTemplate.queryForObject(
+                sql,
+                new MapSqlParameterSource("name", eventName),
+                new EventMapper());
+//        return events.stream().filter(event -> event.getName().contains(eventName)).findFirst().orElse(null);
+    }
+
+    private static final class EventMapper implements RowMapper<Event> {
+
+        @Override
+        public Event mapRow(ResultSet resultSet, int i) throws SQLException {
+            Event event = new Event(
+                    resultSet.getString("event_name"),
+                    resultSet.getTimestamp("event_date").toLocalDateTime()
+            );
+            event.setId(resultSet.getLong("id"));
+
+            return event;
+        }
+    }
+
+    private MapSqlParameterSource getSource(Event event) {
+        MapSqlParameterSource source = new MapSqlParameterSource();
+        source.addValue("id", event.getId());
+        source.addValue("event_name", event.getName());
+        source.addValue("event_date", event.getDateTime());
+
+        return source;
     }
 }

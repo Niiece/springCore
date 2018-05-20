@@ -1,5 +1,7 @@
 import controller.GlobalController;
+import dao.daoImp.LocationDaoImp;
 import dao.daoImp.UserDaoImp;
+import model.Location;
 import model.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

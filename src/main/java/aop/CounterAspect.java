@@ -31,7 +31,7 @@ public class CounterAspect {
 
     @AfterReturning("execution(* *.makeTheChoice(..))")
     public void showStats () {
-        counter.entrySet().forEach(key -> System.out.println(key.getKey().getName() + ": " + key.getValue() + "ticket(s) viewed"));
+        counter.entrySet().forEach(key -> System.out.println(key.getKey().getName() + ": " + key.getValue() + " ticket(s) viewed"));
     }
 
 }
