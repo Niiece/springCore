@@ -1,8 +1,12 @@
 import controller.GlobalController;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
+import dao.daoImp.UserDaoImp;
+import model.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Runner {
 
@@ -12,7 +16,6 @@ public class Runner {
 
         GlobalController globalController = applicationContext.getBean(GlobalController.class);
         globalController.makeTheChoice();
-
 
         applicationContext.close();
 

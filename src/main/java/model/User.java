@@ -45,4 +45,14 @@ public class User extends DomainObject{
     public void addTicket(Ticket ticket) {
         this.tickets.add(ticket);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", userType=" + userType +
+                ", tickets=" + tickets +
+                '}';
+    }
 }

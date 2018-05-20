@@ -6,7 +6,9 @@ import dao.UserDao;
 import model.User;
 import model.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Component;
+import org.sqlite.SQLiteException;
 
 import java.util.Collection;
 
@@ -22,7 +24,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void save(String userName, String password) {
+    public void save(String userName, String password) throws UncategorizedSQLException {
         this.userDao.save(userName, password);
     }
 

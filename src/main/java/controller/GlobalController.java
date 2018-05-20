@@ -7,7 +7,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.stereotype.Component;
+import org.sqlite.SQLiteException;
 import utils.TableBuilderUtil;
 
 import java.io.BufferedReader;
@@ -63,6 +66,9 @@ public class GlobalController{
                         sessionController.login(login, password);
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } catch (EmptyResultDataAccessException e) {
+                        System.out.println("wrong credentials, please repeat");
+                        break;
                     }
                     break;
                 case "2":
@@ -79,7 +85,10 @@ public class GlobalController{
                         userService.save(userName, password);
                         System.out.println("user created successfully");
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        break;
+                    } catch (UncategorizedSQLException e) {
+                        System.out.println("something went wrong. May be user with such login already exists");
+                        break;
                     }
                     break;
                 case "0":

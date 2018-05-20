@@ -3,45 +3,54 @@ package dao.daoImp;
 import dao.UserDao;
 import model.User;
 import model.UserType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Component
+@Component(value = "userDao")
 public class UserDaoImp implements UserDao {
 
-    private List<User> users = new ArrayList<>(Arrays.asList(
-            new User("admin", "admin1", UserType.ADMIN),
-            new User("simple", "simple1", UserType.BASIC)
-    ));
+    @Autowired
+    private JdbcTemplate db;
 
     @Override
     public void save(User obj) {
-        users.add(obj);
+        db.update("INSERT INTO users (login, password) VALUES (?,?)",
+                obj.getLogin(), obj.getPassword());
     }
 
     @Override
     public void remove(User obj) {
-        users.remove(obj);
+        db.update("DELETE FROM users WHERE id = ?",
+                obj.getId());
     }
 
     @Override
     public User getById(int id) {
-        return users.get(id);
+        return db.queryForObject("SELECT id, login, password, type FROM users WHERE id = ?",
+                new Object[]{id}, new UserMapper());
     }
 
     @Override
     public Collection<User> getAll() {
-        return users;
+        return db.query("SELECT id, login, password, type FROM users", new UserMapper());
     }
 
-    @Override @NonNull
+    @Override
+    @NonNull
     public User getByLogin(String login) {
-        return users.stream().filter(user -> user.getLogin().contains(login)).findFirst().orElse(null);
+        return db.queryForObject("SELECT id, login, password, type FROM users WHERE login = ?",
+                new Object[]{login}, new UserMapper());
     }
 
     @Override
@@ -49,4 +58,23 @@ public class UserDaoImp implements UserDao {
         User user = new User(login, password, UserType.BASIC);
         save(user);
     }
+
+    private static final class UserMapper implements RowMapper<User> {
+
+        @Override
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
+            User user = new User(
+                    resultSet.getString("login"),
+                    resultSet.getString("password"),
+                    UserType.valueOf(resultSet.getString("type")));
+            user.setId(Long.valueOf(resultSet.getString("id")));
+
+            return user;
+        }
+    }
+
 }
+
+
+
+
