@@ -6,6 +6,7 @@ import dao.TicketDao;
 import model.Event;
 import model.Location;
 import model.Ticket;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -56,4 +57,10 @@ public class TicketServiceImp implements TicketService {
     public List<Ticket> getPurchasedTickets() {
         return ticketDao.getAll().stream().filter(ticket -> Objects.nonNull(ticket.getUser())).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Ticket> getAllUserTickets(User user) {
+        return ticketDao.getAllUserTickets(user);
+    }
+
 }

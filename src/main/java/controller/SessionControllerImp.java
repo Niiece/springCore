@@ -106,7 +106,8 @@ public class SessionControllerImp implements SessionController {
                 case "3":
                     if (user.getUserType() == UserType.ADMIN) {
                         try {
-                            eventService.remove(in.readLine());
+                            //todo to update remove method: bulk remove using SQL
+//                            eventService.remove(in.readLine());
                             System.out.println("event has been removed");
                         } catch (Exception e) {
                             System.out.println("try again...");
@@ -151,7 +152,7 @@ public class SessionControllerImp implements SessionController {
                     break;
                 case "5":
                     try {
-                        tableBuilderUtil.ticketTableBuilder(this.user.getTickets());
+                        tableBuilderUtil.ticketTableBuilder(ticketService.getAllUserTickets(user));
                     } catch (Exception e) {
                         System.out.println("something went wrong...");
                         break;

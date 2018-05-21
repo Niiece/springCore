@@ -6,7 +6,9 @@ import java.util.List;
 public class User extends DomainObject{
     private String login, password;
     private UserType userType;
-    private List<Ticket> tickets = new ArrayList<>();
+    //todo change logic to get list of tickets from DB
+    //todo add additional method to dao class
+//    private static List<Ticket> tickets = new ArrayList<>();
 
     public User(String login, String password, UserType userType) {
         this.login = login;
@@ -38,13 +40,13 @@ public class User extends DomainObject{
         this.userType = userType;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
+//    public List<Ticket> getTickets() {
+//        return tickets;
+//    }
 
-    public void addTicket(Ticket ticket) {
-        this.tickets.add(ticket);
-    }
+//    public void addTicket(Ticket ticket) {
+//        this.tickets.add(ticket);
+//    }
 
     @Override
     public String toString() {
@@ -52,7 +54,7 @@ public class User extends DomainObject{
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", userType=" + userType +
-                ", tickets=" + tickets +
+//                ", tickets=" + tickets +
                 '}';
     }
 }

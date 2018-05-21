@@ -2,7 +2,6 @@ package dao.daoImp;
 
 import dao.EventDao;
 import model.Event;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,23 +10,16 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 @Repository
 public class EventDaoImp implements EventDao {
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
-
-//    private List<Event> events = new ArrayList<>(Arrays.asList(
-//            new Event("Star Wars 7", LocalDateTime.parse("2018-05-12T10:00:00")),
-//            new Event("Star Wars 8", LocalDateTime.parse("2018-05-12T12:00:00"))
-//    ));
 
     public void save(String eventName, String dateTime) {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -40,28 +32,24 @@ public class EventDaoImp implements EventDao {
     public void remove(String eventName) {
         Event event = new Event(eventName, null);
         remove(event);
-//        remove(events.stream().filter(e -> StringUtils.equalsIgnoreCase(e.getName(), eventName)).findFirst().orElse(null));
     }
 
     @Override
     public void save(Event obj) {
         String sql = "INSERT INTO events (event_name, event_date) VALUES (:event_name, :event_date)";
         jdbcTemplate.update(sql, getSource(obj));
-//        events.add(obj);
     }
 
     @Override
     public void remove(Event obj) {
         String sql = "DELETE FROM events WHERE event_name = :event_name";
         jdbcTemplate.update(sql, getSource(obj));
-//        events.remove(obj);
     }
 
     @Override
     public Event getById(int id) {
         String sql = "SELECT id, event_name, event_date FROM events WHERE id = :id";
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("id", id), new EventMapper());
-//        return events.get(id);
     }
 
     @Override
@@ -77,7 +65,6 @@ public class EventDaoImp implements EventDao {
                 sql,
                 new MapSqlParameterSource("name", eventName),
                 new EventMapper());
-//        return events.stream().filter(event -> event.getName().contains(eventName)).findFirst().orElse(null);
     }
 
     private static final class EventMapper implements RowMapper<Event> {
@@ -98,7 +85,7 @@ public class EventDaoImp implements EventDao {
         MapSqlParameterSource source = new MapSqlParameterSource();
         source.addValue("id", event.getId());
         source.addValue("event_name", event.getName());
-        source.addValue("event_date", event.getDateTime());
+        source.addValue("event_date", Timestamp.valueOf(event.getDateTime()));
 
         return source;
     }

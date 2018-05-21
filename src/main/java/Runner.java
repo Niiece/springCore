@@ -1,5 +1,6 @@
 import controller.GlobalController;
 import dao.daoImp.LocationDaoImp;
+import dao.daoImp.TicketDaoImp;
 import dao.daoImp.UserDaoImp;
 import model.Location;
 import model.User;
@@ -18,6 +19,9 @@ public class Runner {
 
         GlobalController globalController = applicationContext.getBean(GlobalController.class);
         globalController.makeTheChoice();
+
+//        TicketDaoImp ticketDaoImp = applicationContext.getBean("ticketDao", TicketDaoImp.class);
+//        ticketDaoImp.getAll().forEach(System.out::println);
 
         applicationContext.close();
 

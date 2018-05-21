@@ -2,6 +2,7 @@ package controller.service.serviceImp;
 
 import aop.Discount;
 import controller.service.UserService;
+import dao.TicketDao;
 import dao.UserDao;
 import model.User;
 import model.UserType;
@@ -17,6 +18,9 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private TicketDao ticketDao;
 
     @Override
     public User getByLogin(String login) {
@@ -52,8 +56,10 @@ public class UserServiceImp implements UserService {
     @Discount
     public void updateUserType(User user) {
         if (user.getUserType().equals(UserType.BASIC)
-                && user.getTickets().size() >= 4) {
+                && ticketDao.getAllUserTickets(user).size() >= 4) {
+            //todo implement update userType to userDao.class
             user.setUserType(UserType.PREMIUM);
         }
+
     }
 }
