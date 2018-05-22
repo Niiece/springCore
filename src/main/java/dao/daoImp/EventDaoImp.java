@@ -1,6 +1,7 @@
 package dao.daoImp;
 
 import dao.EventDao;
+import dao.TicketDao;
 import model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,6 +20,9 @@ import java.util.Collection;
 public class EventDaoImp implements EventDao {
 
     @Autowired
+    private TicketDao ticketDao;
+
+    @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     public void save(String eventName, String dateTime) {
@@ -31,6 +35,9 @@ public class EventDaoImp implements EventDao {
     @Override
     public void remove(String eventName) {
         Event event = new Event(eventName, null);
+        if (ticketDao.getAllTicketsForEvent(event).size() > 0) {
+            ticketDao.removeTicketsForSpecifiedEvent(event);
+        }
         remove(event);
     }
 

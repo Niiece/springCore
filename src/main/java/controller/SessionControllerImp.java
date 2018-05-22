@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class SessionControllerImp implements SessionController {
     private List<String> sessionMenu;
@@ -106,8 +105,11 @@ public class SessionControllerImp implements SessionController {
                 case "3":
                     if (user.getUserType() == UserType.ADMIN) {
                         try {
-                            //todo to update remove method: bulk remove using SQL
-//                            eventService.remove(in.readLine());
+                            Event event = eventService.getEventByName(in.readLine());
+                            if (ticketService.getAllTicketsForEvent(event).size() > 0) {
+                                ticketService.removeTicketsForSpecifiedEvent(event);
+                            }
+                            eventService.remove(event);
                             System.out.println("event has been removed");
                         } catch (Exception e) {
                             System.out.println("try again...");
@@ -123,11 +125,7 @@ public class SessionControllerImp implements SessionController {
                         System.out.println("select event:");
                         String eventName = in.readLine();
                         Event event = eventService.getEventByName(eventName);
-                        tableBuilderUtil.ticketTableBuilder(
-                                ticketService.getAvailableTickets()
-                                        .stream()
-                                        .filter(e -> e.getEvent().equals(event))
-                                        .collect(Collectors.toList()));
+                        tableBuilderUtil.ticketTableBuilder(ticketService.getAllTicketsForEvent(event));
                         System.out.println("select seat:");
                             long seat = Long.parseLong(in.readLine());
                         Ticket ticket = ticketService.getAvailableTickets()

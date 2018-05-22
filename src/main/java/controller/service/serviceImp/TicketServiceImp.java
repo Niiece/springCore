@@ -8,7 +8,6 @@ import model.Location;
 import model.Ticket;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -61,6 +60,16 @@ public class TicketServiceImp implements TicketService {
     @Override
     public List<Ticket> getAllUserTickets(User user) {
         return ticketDao.getAllUserTickets(user);
+    }
+
+    @Override
+    public void removeTicketsForSpecifiedEvent(Event event) {
+        ticketDao.removeTicketsForSpecifiedEvent(event);
+    }
+
+    @Override
+    public List<Ticket> getAllTicketsForEvent(Event event) {
+        return ticketDao.getAllTicketsForEvent(event);
     }
 
 }

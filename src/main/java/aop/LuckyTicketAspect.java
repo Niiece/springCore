@@ -23,7 +23,7 @@ public class LuckyTicketAspect {
     public void setTicketPrice (ProceedingJoinPoint jp, User user, Ticket ticket) {
         int random = new Random().nextInt(100);
 
-        if (random > 90) {
+        if (random > 50) {
             System.out.println("HOORAY! YOUR TICKET'S PRICE IS 0$");
             ticket.setPrice(0.0);
         }

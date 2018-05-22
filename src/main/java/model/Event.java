@@ -2,7 +2,6 @@ package model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 public class Event extends DomainObject {
     private String name;

@@ -10,4 +10,6 @@ public interface TicketService extends AbstractDomainService<Ticket>  {
     public void createTicketsForNewEvent(Event event, Location location, double price);
     public List<Ticket> getPurchasedTickets();
     public List<Ticket> getAllUserTickets(User user);
+    public void removeTicketsForSpecifiedEvent (Event event);
+    public List<Ticket> getAllTicketsForEvent(Event event);
 }

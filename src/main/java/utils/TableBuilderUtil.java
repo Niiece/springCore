@@ -4,7 +4,6 @@ import model.Event;
 import model.Ticket;
 import model.User;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
